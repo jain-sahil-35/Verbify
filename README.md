@@ -1,98 +1,286 @@
-# FuncName — AI Function Name Generator
+# Verbify — AI Function Name Generator
 
-A full-stack app: a dark-themed static frontend (HTML/CSS/JS) + a Python FastAPI backend using LangChain + Groq.
+Verbify is an AI-powered developer tool that converts natural-language descriptions into concise, meaningful function names.
 
-## Project structure
+Built using FastAPI, LangChain, Groq, and Llama 3.1, Verbify helps developers quickly generate clean and professional function names while coding.
 
+---
+
+## Example
+
+### Input
+
+```text
+Check whether a user is logged in
 ```
-funcname-site/
-├── index.html          # Frontend page
-├── style.css           # Styles
-├── app.js              # Frontend logic (calls the Python backend)
-├── README.md
-└── backend/
-    ├── main.py         # FastAPI app with LangChain + Groq
-    ├── requirements.txt
-    └── .env.example
+
+### Output
+
+```text
+isLoggedIn
+```
+
+### Another Example
+
+#### Input
+
+```text
+Remove duplicate values from an array
+```
+
+#### Output
+
+```text
+deduplicate
 ```
 
 ---
 
-## Backend setup
+## Features
 
-### 1. Get a Groq API key
-Sign up free at [console.groq.com](https://console.groq.com) and create an API key.
+- AI-powered function name generation
+- Context-aware naming using chat history
+- FastAPI backend
+- Groq-powered LLM inference
+- Clean and modern frontend
+- Easy local setup
+- Ready for deployment on Render, Railway, or Fly.io
 
-### 2. Install dependencies
+---
+
+## Tech Stack
+
+### Frontend
+- HTML
+- CSS
+- JavaScript
+
+### Backend
+- Python
+- FastAPI
+- LangChain
+- Groq API
+
+### AI Model
+- Llama 3.1 8B Instant
+
+---
+
+## Project Structure
+
+```text
+Verbify/
+│
+├── backend/
+│   ├── main.py
+│   ├── requirements.txt
+│   ├── .env.example
+│
+├── frontend/
+│   ├── index.html
+│   ├── style.css
+│   └── app.js
+│
+├── .gitignore
+└── README.md
+```
+
+---
+
+## Getting Started
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/jain-sahil-35/Verbify.git
+cd Verbify
+```
+
+## Backend Setup
+
+### 1. Create Virtual Environment
+
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate      # Windows: venv\Scripts\activate
+```
+
+### 2. Activate Virtual Environment
+
+#### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+#### Linux / macOS
+
+```bash
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 3. Configure environment
-```bash
-cp .env.example .env
-# Edit .env and paste your GROQ_API_KEY
+### 4. Configure Environment Variables
+
+Create a `.env` file:
+
+```env
+GROQ_API_KEY=your_groq_api_key
 ```
 
-### 4. Run the server
+### 5. Run the Backend
+
 ```bash
 uvicorn main:app --reload
-# Server runs at http://localhost:8000
-# API docs at http://localhost:8000/docs
+```
+
+Backend:
+```text
+http://localhost:8000
+```
+
+API Docs:
+```text
+http://localhost:8000/docs
 ```
 
 ---
 
-## Frontend setup
+## Frontend Setup
 
-The frontend is a static site — no build step needed.
+Open `frontend/index.html` using VS Code Live Server
 
-For **local development**, open `index.html` with a local server (e.g. VS Code Live Server, or `python -m http.server`). The `API_BASE` in `app.js` defaults to `http://localhost:8000`.
+OR
 
-For **GitHub Pages**:
-1. Deploy the backend somewhere public (see below)
-2. Update `API_BASE` in `app.js` to your deployed backend URL
-3. Push `index.html`, `style.css`, `app.js` to your repo
-4. Enable GitHub Pages under **Settings → Pages**
+```bash
+cd frontend
+python -m http.server 5500
+```
 
----
+Open:
 
-## Deploying the backend
-
-### Render (free tier)
-1. Push the `backend/` folder to a GitHub repo
-2. Create a new **Web Service** on [render.com](https://render.com)
-3. Set **Build command**: `pip install -r requirements.txt`
-4. Set **Start command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-5. Add `GROQ_API_KEY` as an environment variable
-6. Copy the service URL and set it as `API_BASE` in `app.js`
-
-### Railway / Fly.io
-Similar steps — set the start command to `uvicorn main:app --host 0.0.0.0 --port $PORT` and add `GROQ_API_KEY` as an env var.
+```text
+http://localhost:5500
+```
 
 ---
 
-## API reference
+## API Reference
 
-### `POST /generate`
+### POST /generate
+
+#### Request
+
 ```json
-// Request
 {
   "description": "check if a user is logged in",
   "history": [
-    { "role": "user", "content": "get all active users" },
-    { "role": "assistant", "content": "fetchActiveUsers" }
+    {
+      "role": "user",
+      "content": "get all active users"
+    },
+    {
+      "role": "assistant",
+      "content": "fetchActiveUsers"
+    }
   ]
 }
-
-// Response
-{ "name": "isLoggedIn" }
 ```
 
-### `GET /health`
+#### Response
+
 ```json
-{ "status": "ok" }
+{
+  "name": "isLoggedIn"
+}
 ```
+
+### GET /health
+
+```json
+{
+  "status": "ok"
+}
+```
+
+---
+
+## Deployment
+
+### Frontend (GitHub Pages)
+
+1. Push the repository to GitHub.
+2. Open Settings → Pages.
+3. Select "Deploy from a branch".
+4. Choose the `main` branch.
+5. Save changes.
+
+### Backend (Render)
+
+Build Command:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start Command:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port $PORT
+```
+
+Environment Variable:
+
+```env
+GROQ_API_KEY=your_api_key
+```
+
+---
+
+## Roadmap
+
+### Phase 1 (Completed)
+- Function naming assistant
+
+### Phase 2 (In Progress)
+- Variable name suggestions
+- Class name suggestions
+- File name suggestions
+
+### Phase 3 (Planned)
+- Context-aware naming improvements
+- Multiple naming options
+
+### Phase 4 (Planned)
+- Code-to-name generation
+- Refactoring assistance
+
+### Phase 5 (Planned)
+- Repository-wide naming recommendations
+
+---
+
+## Contributing
+
+Contributions, ideas, and feature requests are welcome.
+
+Feel free to fork the repository and submit a pull request.
+
+---
+
+## License
+
+MIT License
+
+---
+
+## Author
+
+**Sahil Jain**
+
+Built with FastAPI, LangChain, Groq, and a passion for developer tooling.
