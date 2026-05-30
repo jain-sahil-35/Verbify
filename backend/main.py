@@ -88,3 +88,11 @@ async def generate_name(req: GenerateRequest):
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+@app.get("/")
+async def root():
+    return {
+        "message": "Verbify API is running",
+        "docs": "/docs",
+        "health": "/health"
+    }
