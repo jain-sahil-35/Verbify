@@ -2,7 +2,7 @@
 
 // ── Config ──
 // Change this to your deployed backend URL (e.g. https://your-app.onrender.com)
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'https://verbify-3bg7.onrender.com';
 
 // ── State ──
 let conversationHistory = [];
