@@ -2,8 +2,8 @@
 
 // ── Config ──
 // Change this to your deployed backend URL (e.g. https://verbify-3bg7.onrender.com)
-// const API_BASE = 'https://verbify-3bg7.onrender.com';
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'https://verbify-3bg7.onrender.com';
+//const API_BASE = 'http://localhost:8000';
 
 // ── State ──
 let conversationHistory = [];   // Shared across all naming types in a session
