@@ -50,40 +50,51 @@ body {
 .site-header {
   position: sticky; top: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 max(2rem, 5vw);
-  height: 60px;
-  background: rgba(12,12,14,0.85);
+  padding: 0 clamp(1rem, 4vw, 2.5rem);   /* tighter on small screens */
+  height: 56px;
+  background: rgba(12,12,14,0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
+  gap: 12px;                              /* prevents logo/nav collision */
+  min-width: 0;
 }
 
 .logo {
   font-family: var(--mono);
-  font-size: 17px;
+  font-size: clamp(14px, 3.5vw, 17px);   /* scales down on narrow screens */
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text-primary);
   text-decoration: none;
+  white-space: nowrap;                    /* fixes the bracket wrap bug */
+  flex-shrink: 0;
 }
 .logo-bracket { color: var(--accent); }
 .logo-text { margin: 0 2px; }
 
-.header-nav { display: flex; align-items: center; gap: 2rem; }
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 3vw, 2rem);        /* gap shrinks on mobile */
+  flex-shrink: 0;
+}
 .header-nav a {
   text-decoration: none;
-  font-size: 13px;
+  font-size: clamp(11px, 2.5vw, 13px);   /* scales with viewport */
   color: var(--text-secondary);
   transition: color 0.15s;
   font-family: var(--mono);
+  white-space: nowrap;
 }
 .header-nav a:hover { color: var(--text-primary); }
 .nav-cta {
   background: var(--accent) !important;
   color: #0c0c0e !important;
-  padding: 6px 18px;
+  padding: clamp(5px, 1.2vw, 6px) clamp(12px, 3vw, 18px); /* responsive padding */
   border-radius: 99px;
   font-weight: 500 !important;
   transition: opacity 0.15s !important;
+  font-size: clamp(11px, 2.5vw, 13px) !important;
 }
 .nav-cta:hover { opacity: 0.88 !important; }
 
@@ -740,6 +751,12 @@ textarea:focus { border-color: var(--border-light); }
 
 /* ── Responsive ── */
 @media (max-width: 600px) {
+  /* Header: never wraps or overflows on mobile */
+  .site-header { height: 52px; }
+  .header-nav { gap: 0.6rem; }
+  /* Hide secondary nav link on small screens to free space */
+  .header-nav a:not(.nav-cta) { display: none; }
+
   .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
   .hero-btn { font-size: 13px; padding: 11px 22px; }
   .ex-pair { flex-direction: column; gap: 6px; }
@@ -748,6 +765,12 @@ textarea:focus { border-color: var(--border-light); }
   .hist-copy { opacity: 1; }
   .steps { grid-template-columns: 1fr; }
   .result-name { font-size: 22px; }
+}
+
+/* Very narrow screens (≤380px — Galaxy S series, iPhone SE) */
+@media (max-width: 380px) {
+  .logo { font-size: 13px; }
+  .nav-cta { padding: 5px 10px !important; font-size: 11px !important; }
 }
 
 /* ════════════════════════════════════════════
@@ -955,11 +978,18 @@ textarea:focus { border-color: var(--border-light); }
 }
 textarea.shake { animation: shake 0.35s ease; }
 
-/* ── Responsive adjustments for new elements ── */
+/* ── Responsive adjustments for Phase 2 elements ── */
 @media (max-width: 600px) {
+  .type-selector-row { padding: 10px 14px; gap: 8px; }
   .type-tabs { gap: 4px; }
-  .type-tab { font-size: 11px; padding: 5px 11px; }
+  .type-tab { font-size: 11px; padding: 5px 10px; }
+  .tab-icon { display: none; }          /* hide icons on tiny tabs */
   .alt-name { font-size: 14px; }
   .hist-right { align-items: flex-start; }
   .hist-alts { justify-content: flex-start; }
+}
+
+@media (max-width: 380px) {
+  .type-tab { font-size: 10px; padding: 4px 8px; }
+  .gen-btn { font-size: 12px; padding: 9px 18px; }
 }
