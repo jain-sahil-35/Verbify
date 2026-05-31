@@ -1,87 +1,53 @@
-# Verbify — AI Function Name Generator
+# Verbify — AI Developer Naming Assistant
 
-Verbify is an AI-powered developer tool that converts natural-language descriptions into concise, meaningful function names.
+Verbify is an AI-powered developer tool that converts natural-language descriptions into clean, convention-correct names for **functions, variables, classes, and files**.
 
-Built using FastAPI, LangChain, Groq, and Llama 3.1, Verbify helps developers quickly generate clean and professional function names while coding.
+Built using FastAPI, LangChain, Groq, and Llama 3.1 8B Instant.
+
+---
+
+## What's new in v2
+
+- **4 naming types**: Function (camelCase), Variable (camelCase), Class (PascalCase), File (kebab-case)
+- **3 suggestions per request**: 1 best match + 2 alternatives, all copyable
+- **Type-aware prompt engineering**: each type has its own rules and examples
+- **Robust JSON parsing**: fallback regex extraction if the model drifts from JSON
+- **Improved error handling**: network failures, invalid inputs, bad responses
+- **Updated history panel**: shows type badge + best name + alternatives
 
 ---
 
 ## Example
 
-### Input
-
-```text
-Check whether a user is logged in
-```
-
-### Output
-
-```text
-isLoggedIn
-```
-
-### Another Example
-
-#### Input
-
-```text
-Remove duplicate values from an array
-```
-
-#### Output
-
-```text
-deduplicate
-```
-
----
-
-## Features
-
-- AI-powered function name generation
-- Context-aware naming using chat history
-- FastAPI backend
-- Groq-powered LLM inference
-- Clean and modern frontend
-- Easy local setup
-- Ready for deployment on Render, Railway, or Fly.io
+| Type | Description | Best | Alternatives |
+|------|-------------|------|--------------|
+| function | Check if a user exists | `findUser` | `getUser`, `lookupUser` |
+| variable | Number of active users | `activeUserCount` | `onlineUserCount`, `activeUsersTotal` |
+| class | Handles payment processing | `PaymentProcessor` | `PaymentHandler`, `PaymentService` |
+| file | Authentication routes | `auth-routes` | `auth-router`, `authentication-routes` |
 
 ---
 
 ## Tech Stack
 
-### Frontend
-- HTML
-- CSS
-- JavaScript
-
-### Backend
-- Python
-- FastAPI
-- LangChain
-- Groq API
-
-### AI Model
-- Llama 3.1 8B Instant
+- **Frontend**: HTML, CSS, JavaScript (no build step)
+- **Backend**: Python, FastAPI, LangChain, Groq API
+- **Model**: Llama 3.1 8B Instant
 
 ---
 
 ## Project Structure
 
-```text
+```
 Verbify/
-│
 ├── backend/
-│   ├── main.py
+│   ├── main.py            ← FastAPI app (v2)
 │   ├── requirements.txt
-│   ├── .env.example
-│
+│   └── .env.example
 ├── frontend/
 │   ├── index.html
 │   ├── style.css
 │   └── app.js
-│
-├── .gitignore
 └── README.md
 ```
 
@@ -89,198 +55,89 @@ Verbify/
 
 ## Getting Started
 
-### Clone the Repository
-
-```bash
-git clone https://github.com/jain-sahil-35/Verbify.git
-cd Verbify
-```
-
-## Backend Setup
-
-### 1. Create Virtual Environment
+### Backend
 
 ```bash
 cd backend
 python -m venv venv
-```
-
-### 2. Activate Virtual Environment
-
-#### Windows
-
-```bash
-venv\Scripts\activate
-```
-
-#### Linux / macOS
-
-```bash
-source venv/bin/activate
-```
-
-### 3. Install Dependencies
-
-```bash
+source venv/bin/activate       # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-```
-
-### 4. Configure Environment Variables
-
-Create a `.env` file:
-
-```env
-GROQ_API_KEY=your_groq_api_key
-```
-
-### 5. Run the Backend
-
-```bash
+cp .env.example .env           # Add your GROQ_API_KEY
 uvicorn main:app --reload
 ```
 
-Backend:
-```text
-http://localhost:8000
-```
+- API: `http://localhost:8000`
+- Docs: `http://localhost:8000/docs`
 
-API Docs:
-```text
-http://localhost:8000/docs
-```
+### Frontend
 
----
-
-## Frontend Setup
-
-Open `frontend/index.html` using VS Code Live Server
-
-OR
+Open `frontend/index.html` with Live Server, or:
 
 ```bash
 cd frontend
 python -m http.server 5500
 ```
 
-Open:
-
-```text
-http://localhost:5500
-```
-
 ---
 
 ## API Reference
 
-### POST /generate
-
-#### Request
+### `POST /generate`
 
 ```json
+// Request
 {
+  "type": "function",
   "description": "check if a user is logged in",
   "history": [
-    {
-      "role": "user",
-      "content": "get all active users"
-    },
-    {
-      "role": "assistant",
-      "content": "fetchActiveUsers"
-    }
+    { "role": "user", "content": "[function] get all active users" },
+    { "role": "assistant", "content": "fetchActiveUsers" }
   ]
 }
-```
 
-#### Response
-
-```json
+// Response
 {
-  "name": "isLoggedIn"
+  "best": "isLoggedIn",
+  "alternatives": ["checkUserSession", "isUserAuthenticated"]
 }
 ```
 
-### GET /health
+Valid `type` values: `function` | `variable` | `class` | `file`
+
+### `GET /health`
 
 ```json
-{
-  "status": "ok"
-}
+{ "status": "ok" }
 ```
 
 ---
 
 ## Deployment
 
-### Frontend (GitHub Pages)
+### Frontend → GitHub Pages
 
-1. Push the repository to GitHub.
-2. Open Settings → Pages.
-3. Select "Deploy from a branch".
-4. Choose the `main` branch.
-5. Save changes.
+1. Push to GitHub
+2. Settings → Pages → Deploy from `main` branch
+3. Update `API_BASE` in `app.js` to your Render URL
 
-### Backend (Render)
+### Backend → Render
 
-Build Command:
-
-```bash
-pip install -r requirements.txt
-```
-
-Start Command:
-
-```bash
-uvicorn main:app --host 0.0.0.0 --port $PORT
-```
-
-Environment Variable:
-
-```env
-GROQ_API_KEY=your_api_key
-```
+- **Build**: `pip install -r requirements.txt`
+- **Start**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- **Env var**: `GROQ_API_KEY=your_key`
 
 ---
 
 ## Roadmap
 
-### Phase 1 (Completed)
-- Function naming assistant
-
-### Phase 2 (In Progress)
-- Variable name suggestions
-- Class name suggestions
-- File name suggestions
-
-### Phase 3 (Planned)
-- Context-aware naming improvements
-- Multiple naming options
-
-### Phase 4 (Planned)
-- Code-to-name generation
-- Refactoring assistance
-
-### Phase 5 (Planned)
-- Repository-wide naming recommendations
-
----
-
-## Contributing
-
-Contributions, ideas, and feature requests are welcome.
-
-Feel free to fork the repository and submit a pull request.
-
----
-
-## License
-
-MIT License
+- [x] Phase 1 — Function naming
+- [x] Phase 2 — Multi-type naming (function / variable / class / file) + multiple suggestions
+- [ ] Phase 3 — Context-aware consistency improvements
+- [ ] Phase 4 — Code snippet → name generation
+- [ ] Phase 5 — Repository-wide naming recommendations
 
 ---
 
 ## Author
 
-**Sahil Jain**
-
-Built with FastAPI, LangChain, Groq, and a passion for developer tooling.
+**Sahil Jain** · Built with FastAPI, LangChain, Groq, and a passion for developer tooling.

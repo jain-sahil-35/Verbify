@@ -749,3 +749,217 @@ textarea:focus { border-color: var(--border-light); }
   .steps { grid-template-columns: 1fr; }
   .result-name { font-size: 22px; }
 }
+
+/* ════════════════════════════════════════════
+   VERBIFY v2 — Phase 2 additions
+   All rules below are new. Existing rules above
+   are unchanged.
+   ════════════════════════════════════════════ */
+
+/* ── Hero: type badges on examples ── */
+.ex-type-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  text-transform: lowercase;
+}
+.ex-fn   { background: rgba(232,255,71,0.12); color: var(--accent); }
+.ex-var  { background: rgba(100,180,255,0.12); color: #64b4ff; }
+.ex-cls  { background: rgba(180,100,255,0.12); color: #b464ff; }
+.ex-file { background: rgba(255,160,80,0.12);  color: #ffa050; }
+
+/* ── Type selector row ── */
+.type-selector-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.type-selector-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.type-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.type-tab {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.type-tab:hover {
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+.type-tab.active {
+  background: rgba(232,255,71,0.1);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tab-icon {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* ── Result area: multi-suggestion layout ── */
+
+/* Each labelled section (best / alternatives) */
+.result-section {
+  margin-bottom: 16px;
+}
+.result-section:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Alternatives row: chips */
+.result-alts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.alt-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  transition: border-color 0.15s;
+}
+.alt-chip:hover { border-color: var(--border-light); }
+
+.alt-name {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.alt-copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary);
+  padding: 2px 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.15s;
+  font-family: var(--mono);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.alt-copy-btn:hover { color: var(--text-primary); }
+.alt-copy-btn.copied { color: var(--accent); }
+
+/* ── History: updated item layout ── */
+
+/* Override the existing 3-column grid to accommodate new content */
+.history-item {
+  display: flex !important;    /* override existing grid */
+  align-items: flex-start !important;
+  gap: 12px !important;
+  flex-wrap: wrap;
+}
+
+.hist-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.hist-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* Type badges in history */
+.hist-type-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  text-transform: lowercase;
+}
+.hist-function { background: rgba(232,255,71,0.1);  color: var(--accent); }
+.hist-variable { background: rgba(100,180,255,0.1); color: #64b4ff; }
+.hist-class    { background: rgba(180,100,255,0.1); color: #b464ff; }
+.hist-file     { background: rgba(255,160,80,0.1);  color: #ffa050; }
+
+/* Alternative name chips in history */
+.hist-alts {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.hist-alt {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  padding: 1px 7px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.hist-alt:hover { color: var(--text-secondary); border-color: var(--border-light); }
+
+/* ── Input shake animation (empty submit) ── */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-5px); }
+  40%       { transform: translateX(5px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+textarea.shake { animation: shake 0.35s ease; }
+
+/* ── Responsive adjustments for new elements ── */
+@media (max-width: 600px) {
+  .type-tabs { gap: 4px; }
+  .type-tab { font-size: 11px; padding: 5px 11px; }
+  .alt-name { font-size: 14px; }
+  .hist-right { align-items: flex-start; }
+  .hist-alts { justify-content: flex-start; }
+}

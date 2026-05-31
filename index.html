@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verbify — AI Function Name Generator</title>
-  <meta name="description" content="Generate clean, concise camelCase function names from plain English descriptions using AI." />
+  <title>Verbify — AI Developer Naming Assistant</title>
+  <meta name="description" content="Generate clean, concise names for functions, variables, classes, and files using AI." />
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,29 +29,38 @@
   <main>
     <!-- Hero -->
     <section class="hero">
-      <div class="hero-tag">AI-powered · camelCase · Context-aware</div>
+      <div class="hero-tag">AI-powered · Multi-type · Context-aware</div>
       <h1 class="hero-title">
-        Stop naming functions<br />
+        Stop naming things<br />
         <span class="hero-accent">badly.</span>
       </h1>
-      <p class="hero-sub">Describe what your function does in plain English. Get back a precise, concise camelCase name — every time.</p>
+      <p class="hero-sub">Describe what your function, variable, class, or file does in plain English. Get back precise, convention-correct names — every time.</p>
       <a href="#generator" class="hero-btn">Generate a name <span class="arrow">↓</span></a>
 
       <div class="hero-examples">
         <div class="ex-pair">
-          <span class="ex-desc">"get all users from database where active is true"</span>
+          <span class="ex-type-badge ex-fn">fn</span>
+          <span class="ex-desc">"check if a user exists in the database"</span>
           <span class="ex-arrow">→</span>
-          <span class="ex-name">fetchActiveUsers</span>
+          <span class="ex-name">findUser</span>
         </div>
         <div class="ex-pair">
-          <span class="ex-desc">"convert fahrenheit temperature to celsius"</span>
+          <span class="ex-type-badge ex-var">var</span>
+          <span class="ex-desc">"number of active users"</span>
           <span class="ex-arrow">→</span>
-          <span class="ex-name">toCelsius</span>
+          <span class="ex-name">activeUserCount</span>
         </div>
         <div class="ex-pair">
-          <span class="ex-desc">"check if email address format is valid"</span>
+          <span class="ex-type-badge ex-cls">cls</span>
+          <span class="ex-desc">"handles payment processing"</span>
           <span class="ex-arrow">→</span>
-          <span class="ex-name">isValidEmail</span>
+          <span class="ex-name">PaymentProcessor</span>
+        </div>
+        <div class="ex-pair">
+          <span class="ex-type-badge ex-file">file</span>
+          <span class="ex-desc">"authentication routes"</span>
+          <span class="ex-arrow">→</span>
+          <span class="ex-name">auth-routes</span>
         </div>
       </div>
     </section>
@@ -59,54 +68,97 @@
     <!-- Generator -->
     <section class="generator-section" id="generator">
       <div class="generator-card">
+
+        <!-- Card header: label + context indicator -->
         <div class="gen-header">
-          <div class="gen-label">Function Description</div>
+          <div class="gen-label">Developer Naming Assistant</div>
           <div class="context-indicator" id="contextIndicator">
             <span class="ctx-dot"></span>
             <span class="ctx-text">No context yet</span>
           </div>
         </div>
 
+        <!-- Type selector -->
+        <div class="type-selector-row">
+          <span class="type-selector-label">Naming type</span>
+          <div class="type-tabs" id="typeTabs" role="radiogroup" aria-label="Naming type">
+            <button class="type-tab active" data-type="function" role="radio" aria-checked="true">
+              <span class="tab-icon">ƒ</span> Function
+            </button>
+            <button class="type-tab" data-type="variable" role="radio" aria-checked="false">
+              <span class="tab-icon">x</span> Variable
+            </button>
+            <button class="type-tab" data-type="class" role="radio" aria-checked="false">
+              <span class="tab-icon">◈</span> Class
+            </button>
+            <button class="type-tab" data-type="file" role="radio" aria-checked="false">
+              <span class="tab-icon">≡</span> File
+            </button>
+          </div>
+        </div>
+
+        <!-- Input area -->
         <div class="input-area">
           <textarea
             id="descInput"
-            placeholder="Describe what your function does…&#10;e.g. calculate the total price including tax and discounts"
+            placeholder="Describe what it does…&#10;e.g. check if the user's session has expired"
             rows="3"
           ></textarea>
           <button class="gen-btn" id="genBtn" onclick="generate()">
-            <span class="btn-text">Generate Name</span>
+            <span class="btn-text">Generate Names</span>
             <span class="btn-icon">→</span>
           </button>
         </div>
 
+        <!-- Result area -->
         <div class="result-area" id="resultArea">
+          <!-- Placeholder (initial state) -->
           <div class="result-placeholder" id="resultPlaceholder">
             <span class="ph-icon">ƒ</span>
-            <span class="ph-text">Your function name will appear here</span>
+            <span class="ph-text">Your names will appear here</span>
           </div>
+
+          <!-- Results (populated after generation) -->
           <div class="result-output hidden" id="resultOutput">
-            <div class="result-label-sm">Suggested name</div>
-            <div class="result-name-row">
-              <span class="result-name" id="resultName"></span>
-              <button class="copy-btn" id="copyBtn" onclick="copyName()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                Copy
-              </button>
+            <!-- Best match -->
+            <div class="result-section">
+              <div class="result-label-sm">Best match</div>
+              <div class="result-name-row">
+                <span class="result-name" id="resultName"></span>
+                <button class="copy-btn" id="copyBtn" onclick="copyBest()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  Copy
+                </button>
+              </div>
             </div>
+
+            <!-- Alternatives -->
+            <div class="result-section result-alts-section">
+              <div class="result-label-sm">Alternatives</div>
+              <div class="result-alts-row" id="resultAltsRow">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
             <div class="result-meta" id="resultMeta"></div>
           </div>
+
+          <!-- Loading state -->
           <div class="loading hidden" id="loadingState">
             <div class="loading-bars">
               <span></span><span></span><span></span><span></span>
             </div>
             <span class="loading-text">Thinking…</span>
           </div>
+
+          <!-- Error state -->
           <div class="error-state hidden" id="errorState">
             <span class="error-icon">⚠</span>
             <span class="error-msg" id="errorMsg">Something went wrong.</span>
           </div>
         </div>
 
+        <!-- Options row -->
         <div class="options-row">
           <label class="option-toggle">
             <input type="checkbox" id="keepContext" checked />
@@ -115,6 +167,7 @@
           </label>
           <button class="clear-ctx-btn" id="clearCtxBtn" onclick="clearContext()">Clear context</button>
         </div>
+
       </div>
     </section>
 
@@ -140,18 +193,18 @@
       <div class="steps">
         <div class="step">
           <div class="step-num">01</div>
-          <h3>Describe your function</h3>
-          <p>Type a plain English description of what your function does. Be as specific or as vague as you like.</p>
+          <h3>Pick a naming type</h3>
+          <p>Choose between Function, Variable, Class, or File. Each type follows its own naming conventions.</p>
         </div>
         <div class="step">
           <div class="step-num">02</div>
-          <h3>AI names it</h3>
-          <p>Claude analyzes your description and applies naming best practices — preferring verbs, keeping names short, using camelCase.</p>
+          <h3>Describe it</h3>
+          <p>Type a plain English description. Be as specific or as brief as you like — the AI adapts to both.</p>
         </div>
         <div class="step">
           <div class="step-num">03</div>
-          <h3>Context builds up</h3>
-          <p>With context mode on, the AI remembers previous descriptions and names in your session, ensuring consistent naming style.</p>
+          <h3>Get 3 suggestions</h3>
+          <p>Receive a best match plus two alternatives. Context mode keeps naming consistent across your session.</p>
         </div>
       </div>
     </section>
@@ -160,7 +213,7 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <span class="footer-logo">{Verbify}</span>
-      <span class="footer-note">Powered by Claude · Built for developers</span>
+      <span class="footer-note">Powered by Groq · Built for developers</span>
     </div>
   </footer>
 
