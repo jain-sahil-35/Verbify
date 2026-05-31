@@ -50,37 +50,41 @@ body {
 .site-header {
   position: sticky; top: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 clamp(1rem, 4vw, 2.5rem);   /* tighter on small screens */
-  height: 56px;
+  padding: 0 clamp(0.875rem, 4vw, 2.5rem);
+  height: 52px;
   background: rgba(12,12,14,0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-  gap: 12px;                              /* prevents logo/nav collision */
-  min-width: 0;
+  gap: 8px;
+  overflow: hidden;         /* last-resort: never grows taller than 52px */
 }
 
 .logo {
   font-family: var(--mono);
-  font-size: clamp(14px, 3.5vw, 17px);   /* scales down on narrow screens */
+  font-size: clamp(13px, 3.8vw, 17px);
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text-primary);
   text-decoration: none;
-  white-space: nowrap;                    /* fixes the bracket wrap bug */
+  white-space: nowrap;      /* prevents { Verbify } wrapping across lines */
   flex-shrink: 0;
+  display: inline-flex;     /* treat as inline row, not block */
+  align-items: center;
+  gap: 1px;
+  line-height: 1;
 }
-.logo-bracket { color: var(--accent); }
-.logo-text { margin: 0 2px; }
+.logo-bracket { color: var(--accent); display: inline; }
+.logo-text { margin: 0 1px; display: inline; }
 
 .header-nav {
   display: flex;
   align-items: center;
-  gap: clamp(0.75rem, 3vw, 2rem);        /* gap shrinks on mobile */
+  gap: clamp(0.5rem, 2.5vw, 2rem);
   flex-shrink: 0;
 }
 .header-nav a {
   text-decoration: none;
-  font-size: clamp(11px, 2.5vw, 13px);   /* scales with viewport */
+  font-size: clamp(11px, 2.5vw, 13px);
   color: var(--text-secondary);
   transition: color 0.15s;
   font-family: var(--mono);
@@ -90,11 +94,13 @@ body {
 .nav-cta {
   background: var(--accent) !important;
   color: #0c0c0e !important;
-  padding: clamp(5px, 1.2vw, 6px) clamp(12px, 3vw, 18px); /* responsive padding */
+  padding: 5px clamp(10px, 2.5vw, 18px) !important;
   border-radius: 99px;
   font-weight: 500 !important;
-  transition: opacity 0.15s !important;
   font-size: clamp(11px, 2.5vw, 13px) !important;
+  transition: opacity 0.15s !important;
+  white-space: nowrap;
+  line-height: 1.4;
 }
 .nav-cta:hover { opacity: 0.88 !important; }
 
@@ -751,10 +757,7 @@ textarea:focus { border-color: var(--border-light); }
 
 /* ── Responsive ── */
 @media (max-width: 600px) {
-  /* Header: never wraps or overflows on mobile */
-  .site-header { height: 52px; }
-  .header-nav { gap: 0.6rem; }
-  /* Hide secondary nav link on small screens to free space */
+  /* Hide secondary nav link on small screens, keep only the CTA */
   .header-nav a:not(.nav-cta) { display: none; }
 
   .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
